@@ -4,7 +4,88 @@
   box-sizing: border-box;
 }
 
-body {
-  height: 100vw;
-  display: grid;
+:root {
+  font-size: 62.5%;
+
+  --bg-primary-color: hsla(0, 0%, 0%, 0.872);
+  --bg-secondary-color: hsla(0, 100%, 50%, 0.734);
+  --bg-selected-button: #9d3b02c3;
+  --primary-color: hsl(208, 100%, 97%);
+  
 }
+
+body {
+  height: 100vh;
+  background-color: var(--bg-primary-color);
+  color: var(--primary-color);
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  align-items: center;
+  justify-items: space-around;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+time {
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  font-size: clamp(6rem, 6rem + 3vw, 12rem);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.controls {
+  display: flex;
+  gap: 2rem;
+
+
+}
+
+.controls button svg {
+  height: clamp(0.6rem, 0.6 rem + 2vw, 1.6rem);
+  width: clamp(0.6rem, 0.6 rem + 2vw, 1.6rem);
+}
+
+button {
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.sounds {
+  justify-self: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+}
+
+.sounds button svg {
+  
+  width: clamp(8rem, 8rem + 4vw, 13rem);
+  height: clamp(8rem, 8rem + 4vw, 13rem);
+}
+
+button svg path:first-child {
+  fill: var(--bg-secondary-color);
+}
+
+button svg path:nth-child(2) {
+  fill:aliceblue
+}
+
+
