@@ -8,8 +8,8 @@
   font-size: 62.5%;
 
   --bg-primary-color: hsla(0, 0%, 0%, 0.872);
-  --bg-secondary-color: hsla(0, 100%, 50%, 0.734);
-  --bg-selected-button: #9d3b02c3;
+  --bg-secondary-color: hsla(0, 94%, 43%, 0.567);
+  --bg-selected-button: #d20707;
   --primary-color: hsl(208, 100%, 97%);
   
 }
@@ -80,12 +80,39 @@ button {
   height: clamp(8rem, 8rem + 4vw, 13rem);
 }
 
-button svg path:first-child {
+button svg path:first-child, 
+.pause svg path
+{
   fill: var(--bg-secondary-color);
 }
+
 
 button svg path:nth-child(2) {
   fill:aliceblue
 }
+
+.selected-button svg path:first-child{
+  fill: var(--bg-selected-button);
+}
+
+.selected-button svg path:nth-child(2) {
+  fill: var(--bg-primary-color);
+}
+
+.time-up {
+  animation: timerBlinks 500ms;
+  animation-iteration-count: 3;
+}
+
+@keyframes timerBlinks {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 
 
