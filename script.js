@@ -7,11 +7,20 @@ const addMinutes = document.querySelector('.add5');
 const removeMinutes = document.querySelector('.remove5');
 const TIMER = document.querySelector('#timer');
 
+// Logic controls
 let minutesSet = document.querySelector('.minutes');
 let currentMinutes = Number(minutesSet.textContent);
 let userMinutes = 25;
+let nextCounter = 5;
+
 let seconds = document.querySelector('.seconds');
 let currentSeconds = 0;
+
+let lapsCounter = 0;
+
+let soundIsPlaying = false;
+let isClocking = false;
+let isResting = false;
 
 // SOUND BUTTONS
 const forestButton = document.querySelector('.forest');
@@ -26,20 +35,14 @@ const coffeeshopSound = new Audio('./sounds/cafeteria.wav'); // https://drive.go
 const firePlaceSound = new Audio('./sounds/lareira.wav'); // https://drive.google.com/file/d/1MakaBPxJvTa_whaSM3kEbRcxiVd1GRCB/view
 const timeUpSound = new Audio('./sounds/kitchen-timer.mp3');
 
-let isPlaying = false;
-let isClocking = false;
-let isResting = false;
-// let isFocusing = false;
-let add5 = false;
-let remove5 = false;
 
 
-//funções
+// Functions
 
 // Sound functions
 
 function playSound (sound) {
-  isPlaying = true;
+  soundIsPlaying = true;
   sound.play();
   sound.loop = true;
 }
@@ -50,15 +53,15 @@ function playSound (sound) {
 //   coffeeshopSound.pause();
 //   firePlaceSound.pause();
 // } 
-// This one I would use to stop the currently playing sound when I select another sound button without unselecting the current one, but I realized they sound nice when played together 
+// This one I would use to stop the currently playing sound when I select another sound button without unselecting the current one, but I realized they actually sound nice when played together 
 
 function stopThisSound (sound) {
   sound.pause();
-  isPlaying = false;
+  soundIsPlaying = false;
 }
 
 function soundButtonHandler(sound, button) {
-  if (isPlaying) {
+  if (soundIsPlaying) {
     stopThisSound(sound);
     button.classList.remove('selected-button');
     return;
@@ -102,8 +105,14 @@ function countdown() {
         isResting = false;
         nextCounter = userMinutes;
       } else {
-        nextCounter = 5;
         isResting = true;
+        lapsCounter++;
+        if (lapsCounter >= 4) {
+          nextCounter = 30;
+          lapsCounter = 0;
+        } else {
+        nextCounter = 5;
+        }
       }
       timeUp();
       return;
@@ -111,7 +120,7 @@ function countdown() {
 
     countdown();
     
-  }, 10)
+  }, 1000)
 }
 
 function pause() {
@@ -126,8 +135,6 @@ function resetControls() {
   setButton.classList.remove('hidden');
 }
 
-let nextCounter = 5;
-
 function timeUp() {
   clearTimeout(pomoTimer);
   updateCounter(00, 00);
@@ -135,21 +142,7 @@ function timeUp() {
   
   const delay = setTimeout(() => {
     updateCounter(nextCounter, 00);
-  }, 2000);
-
-  resetControls();
-  isClocking = false;
-}
-
-function stopNow() {
-  clearTimeout(pomoTimer);
-  updateCounter(00, 00);
-  TIMER.classList.add('time-up');
-
-  const delay = setTimeout(() => {
-    updateCounter(userMinutes, 00);
-    // isResting = true;
-  }, 2000);
+  }, 1500);
 
   resetControls();
   isClocking = false;
@@ -164,7 +157,6 @@ playButton.addEventListener('click', function () {
   stopButton.classList.remove('hidden');
   TIMER.classList.remove('time-up');
 
-
   countdown();
 })
 
@@ -175,7 +167,8 @@ pauseButton.addEventListener('click', function () {
 })
 
 stopButton.addEventListener('click', function () {
-  stopNow();
+  nextCounter = userMinutes;
+  timeUp();
 })
 
 setButton.addEventListener('click', function () {
@@ -184,7 +177,6 @@ setButton.addEventListener('click', function () {
     currentMinutes = userMinutes;
   }
   updateCounter(currentMinutes, 00);
-  // DEPOIS DAQUI AJEITA O TIMER RESET PARA USERMINUTES
 })
 
 addMinutes.addEventListener('click', function () {
@@ -196,6 +188,10 @@ removeMinutes.addEventListener('click', function () {
     updateCounter(currentMinutes - 5, currentSeconds);
   } else {
     updateCounter(25, 00);
+  }
+
+  if (currentMinutes === 0 && currentSeconds === 0) {
+    updateCounter(userMinutes, 00);
   }
 })
 
