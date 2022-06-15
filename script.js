@@ -148,6 +148,13 @@ function timeUp() {
   isClocking = false;
 }
 
+function stopNow() {
+  clearTimeout(pomoTimer);
+  updateCounter(userMinutes, 00);
+  resetControls();
+  isClocking = false;
+}
+
 // events
 
 playButton.addEventListener('click', function () {
@@ -161,14 +168,13 @@ playButton.addEventListener('click', function () {
 })
 
 pauseButton.addEventListener('click', function () {
-  playButton.classList.add('hidden');
-  pauseButton.classList.remove('hidden');
+  playButton.classList.remove('hidden');
+  pauseButton.classList.add('hidden');
   pause();
 })
 
 stopButton.addEventListener('click', function () {
-  nextCounter = userMinutes;
-  timeUp();
+  stopNow();
 })
 
 setButton.addEventListener('click', function () {
@@ -187,7 +193,7 @@ removeMinutes.addEventListener('click', function () {
   if (currentMinutes >= 5) {
     updateCounter(currentMinutes - 5, currentSeconds);
   } else {
-    updateCounter(25, 00);
+    stopNow();
   }
 
   if (currentMinutes === 0 && currentSeconds === 0) {
